@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Super League — IIIT Kottayam
 
-## Getting Started
+![Status](https://img.shields.io/badge/Status-Live-success)
+![Contributions](https://img.shields.io/badge/Contributions-Welcome-blue)
 
-First, run the development server:
+**Super League** is the official football league and fantasy prediction platform for the Indian Institute of Information Technology, Kottayam. Designed and built by three students, it is maintained by the open-source community and serves as the authoritative digital record for collegiate football at IIIT Kottayam.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Live Platform:** [super-league.pages.dev](https://super-league.pages.dev/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Real-Time League Tracking**
+Live match scores, results, and standings for both the Men's and Women's divisions.
 
-## Learn More
+**FUT-Style Player Profiles**
+Custom player cards with unique playstyles, core attributes, and historical statistics for every IIIT Kottayam footballer.
 
-To learn more about Next.js, take a look at the following resources:
+**Fantasy Prediction Engine**
+A proprietary fantasy system in which users predict match results, exact scorelines, and goalscorers ahead of kickoff to compete on a global leaderboard.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**League Administration**
+Centralised access to official rules, newsletter integration, and a Legends archive preserving historical college football records.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Core Team
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Super League was designed and engineered by:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Kevin Mathew
+- Abhinav S
+- Ebin Thomas
+
+The platform is maintained by the Super League Core Team and community contributors.
+
+---
+
+## Contributing
+
+Super League operates under a **Benevolent Dictator / Maintainer** governance model. To protect the integrity of the live platform, contributors do not have direct write access to `main` and are required to follow a fork-based workflow.
+
+For local setup instructions, branching conventions, and pull request standards, refer to the [Contributing Guide](CONTRIBUTING.md).
+
+> When opening a pull request, ensure **Allow edits from maintainers** is enabled so the Core Team can assist with conflict resolution where necessary.
