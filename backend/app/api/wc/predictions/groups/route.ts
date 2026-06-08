@@ -1,21 +1,25 @@
+import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { NextResponse, NextRequest } from 'next/server';
 
-const supabaseUrl = process.env.SUPABASE_URL as string;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY as string; 
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
-export async function POST(request: NextRequest) {
+export const dynamic = 'force-dynamic';
+
+export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { user_id, predictions } = body;
 
-    // predictions should be an array of objects from the frontend
     if (!user_id || !Array.isArray(predictions) || predictions.length === 0) {
-       return NextResponse.json({ error: 'Invalid payload data' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid payload data' },
+        { status: 400 }
+      );
     }
 
-    // Format the data to match our new schema
     const formattedPredictions = predictions.map((pred: any) => ({
       user_id,
       group_name: pred.group_name,
@@ -23,48 +27,66 @@ export async function POST(request: NextRequest) {
       predicted_2nd_place: pred.second_place_id,
       predicted_3rd_place: pred.third_place_id,
       predicted_4th_place: pred.fourth_place_id,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     }));
 
-    // Upsert the entire array into Supabase at once
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('wc_group_predictions')
       .upsert(formattedPredictions, {
-        onConflict: 'user_id, group_name' 
-      })
-      .select();
+        onConflict: 'user_id,group_name',
+      });
 
     if (error) throw error;
 
-    return NextResponse.json({ success: true, saved_count: data.length });
-
-  } catch (error) {
-    console.error("Group Prediction Error:", error);
-    return NextResponse.json({ error: "Failed to save group predictions" }, { status: 500 });
+    return NextResponse.json({
+      success: true,
+      saved_count: formattedPredictions.length,
+    });
+  } catch (error: any) {
+    console.error('Group Prediction Error:', error);
+    return NextResponse.json(
+      { error: 'Failed to save group predictions' },
+      { status: 500 }
+    );
   }
 }
 
-
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
   try {
-    // Grab the user_id from the URL query (e.g., /api/wc/predictions/groups?user_id=123)
     const { searchParams } = new URL(request.url);
-    const userId = searchParams.get('user_id');
+    const user_id = searchParams.get('user_id');
 
-    if (!userId) {
-      return NextResponse.json({ error: "Missing user_id parameter" }, { status: 400 });
+    if (!user_id) {
+      return NextResponse.json(
+        { error: 'Missing user_id parameter' },
+        { status: 400 }
+      );
     }
 
     const { data, error } = await supabase
       .from('wc_group_predictions')
       .select('*')
-      .eq('user_id', userId);
+      .eq('user_id', user_id);
 
     if (error) throw error;
 
-    return NextResponse.json({ success: true, data });
-  } catch (error) {
-    console.error("Fetch Predictions Error:", error);
-    return NextResponse.json({ error: "Failed to fetch predictions" }, { status: 500 });
+    const formattedData = data.map((d: any) => ({
+      ...d,
+      first_place_id: d.predicted_1st_place,
+      second_place_id: d.predicted_2nd_place,
+      third_place_id: d.predicted_3rd_place,
+      fourth_place_id: d.predicted_4th_place,
+    }));
+
+    return NextResponse.json({
+      success: true,
+      data: formattedData,
+    });
+  } catch (error: any) {
+    console.error('Fetch Predictions Error:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch predictions' },
+      { status: 500 }
+    );
   }
 }
